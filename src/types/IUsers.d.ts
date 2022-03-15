@@ -5,3 +5,10 @@ export interface IUser{
     password:string
     type:number
 }
+
+export interface IBlog{
+    _id?:string
+    name:string
+    description:string
+    title:string
+}
