@@ -1,7 +1,7 @@
 import { gql } from "apollo-server";
 
 const UserFragemnt = `
-_id: String
+_id: ID
 name: String
 email: String
 type: Int
@@ -23,7 +23,7 @@ export const TypeDef = gql`
   }
   
   type UserResponse {
-    docs(take: Int, skip: Int): [User]
+    docs(take: Int, skip: Int, sort:String , order: String): [User]
     count: Int
   }
 

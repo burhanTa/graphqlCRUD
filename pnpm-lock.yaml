@@ -24,6 +24,7 @@ specifiers:
   graphql-fields: ^2.0.3
   mongoose: ^6.2.6
   nodemon: ^2.0.15
+  process: ^0.11.10
   react: ^17.0.2
   react-dom: ^17.0.2
   react-router-dom: ^6.2.2
@@ -61,6 +62,7 @@ devDependencies:
   chokidar: 3.5.3
   concurrently: 7.0.0
   nodemon: 2.0.15
+  process: 0.11.10
   typescript: 4.6.2
   vite: 2.8.6
 
@@ -2776,6 +2778,11 @@ packages:
   /process-warning/1.0.0:
     resolution: {integrity: sha512-du4wfLyj4yCZq1VupnVSZmRsPJsNuxoDQFdCFHLaYiEbFBD7QE0a+I4D7hOxrVnh78QE/YipFAj9lXHiXocV+Q==}
     dev: false
+
+  /process/0.11.10:
+    resolution: {integrity: sha1-czIwDoQBYb2j5podHZGn1LwW8YI=}
+    engines: {node: '>= 0.6.0'}
+    dev: true
 
   /prop-types/15.8.1:
     resolution: {integrity: sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==}

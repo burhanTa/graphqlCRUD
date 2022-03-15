@@ -17,12 +17,26 @@ export const getUsers = async (_: any, data: any, body: any, select: any) => {
   let promises: Promise<any>[] = [];
   let take = select.variableValues?.take ?? 10;
   let skip = select.variableValues?.skip ?? 0;
-
+  let sort = select.variableValues?.sort;
+  let order = select.variableValues?.order;
+  console.log(sort, order);
   const fieldList = graphqlFields(select);
   const keys = Object.keys(fieldList.docs ?? {});
   if (keys.length)
     promises.push(
-      MUser.find({}, keys.join(" "), { limit: take, skip }).lean().exec()
+      MUser.find({}, keys.join(" "), {
+        limit: take,
+        skip,
+        ...(sort
+          ? {
+              sort: {
+                [sort]: order == "asc" ? 1 : -1,
+              },
+            }
+          : {}),
+      })
+        .lean()
+        .exec()
     );
 
   if (fieldList.count) {
@@ -50,7 +64,6 @@ export const upsertUser = async (
   const userData = data.input;
   const _id: any = data.input._id ?? new mongo.ObjectId();
   delete userData._id;
-  console.log(userData, _id);
   const user = await MUser.findOneAndUpdate(
     { _id: _id },
     { $set: userData },
