@@ -1,9 +1,21 @@
 import { gql } from "@apollo/client";
 export const GET_USERS = gql`
-  query Users($take: Int, $skip: Int, $order: String, $sort: String) {
+  query Users(
+    $take: Int
+    $skip: Int
+    $order: String
+    $sort: String
+    $search: String
+  ) {
     users {
       count
-      docs(take: $take, skip: $skip, order: $order, sort: $sort) {
+      docs(
+        take: $take
+        skip: $skip
+        order: $order
+        sort: $sort
+        search: $search
+      ) {
         email
         name
         _id

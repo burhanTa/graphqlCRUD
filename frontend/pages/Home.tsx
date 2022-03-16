@@ -22,12 +22,19 @@ export const Home = () => {
   const [userList, setUserList] = useState<IUser[]>([]);
   const [count, setCount] = useState(0);
   const [sort, setSort] = useState<SortType | undefined>(undefined);
+  const [search,setSearch]= useState("")
 
   // queries
   const userGraph = useQuery<{
     users: { docs: IUser[]; count: number };
   }>(GET_USERS, {
-    variables: { take: limit, skip: skip, sort:sort?.name,order:sort?.order },
+    variables: {
+      take: limit,
+      skip: skip,
+      sort: sort?.name,
+      order: sort?.order,
+      search
+    },
   });
   useEffect(() => {
     if (userGraph.data) {
@@ -103,7 +110,17 @@ export const Home = () => {
     <>
       <h1>Home page</h1>
       <div className="header">
-        <b> Users ( {count} )</b>
+        <b className="header-item">
+          Users ( {count} ){" "}
+          <select
+            onChange={(e) => setLimit(parseInt(e.currentTarget.value))}
+            value={limit}
+          >
+            <option value="5">5</option> <option value="10">10</option>
+            <option value="25">25</option> <option value="50">50</option>
+          </select>
+          <input onInput={e=>setSearch(e.currentTarget.value)} placeholder="search" type="text" />
+        </b>
         <button onClick={() => setModal(!modal)} className="btn">
           Add User
         </button>

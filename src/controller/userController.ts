@@ -19,32 +19,83 @@ export const getUsers = async (_: any, data: any, body: any, select: any) => {
   let skip = select.variableValues?.skip ?? 0;
   let sort = select.variableValues?.sort;
   let order = select.variableValues?.order;
-  console.log(sort, order);
+  let search = select.variableValues?.search;
+
   const fieldList = graphqlFields(select);
   const keys = Object.keys(fieldList.docs ?? {});
   if (keys.length)
     promises.push(
-      MUser.find({}, keys.join(" "), {
-        limit: take,
-        skip,
-        ...(sort
+      MUser.find(
+        {
+          ...(search
+            ? {
+                $or: [
+                  {
+                    name: {
+                      $regex: search,
+                      $options: "i",
+                    },
+                  },
+                  {
+                    email: {
+                      $regex: search,
+                      $options: "i",
+                    },
+                  },
+                ],
+              }
+            : {}),
+        },
+        keys.join(" "),
+        {
+          limit: take,
+          skip,
+
+          ...(sort
+            ? {
+                sort: {
+                  [sort]: order == "asc" ? 1 : -1,
+                },
+              }
+            : {}),
+        }
+      )
+        .lean()
+        .exec()
+    );
+
+  if (fieldList.count) {
+    promises.push(
+      MUser.countDocuments({
+        ...(search
           ? {
-              sort: {
-                [sort]: order == "asc" ? 1 : -1,
-              },
+              $or: [
+                {
+                  name: {
+                    $regex: search,
+                    $options: "i",
+                  },
+                },
+                {
+                  email: {
+                    $regex: search,
+                    $options: "i",
+                  },
+                },
+              ],
             }
           : {}),
       })
         .lean()
         .exec()
     );
-
-  if (fieldList.count) {
-    promises.push(MUser.countDocuments().lean().exec());
   }
 
   const [user, count] = await Promise.all(promises);
-  return { docs: user, count: count ? count : user };
+  return {
+    docs: user ?? [],
+    count: count ? count : Array.isArray(user) ? 0 : user,
+  };
 };
 
 /**

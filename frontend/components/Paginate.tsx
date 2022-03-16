@@ -12,8 +12,8 @@ export const Paginate = (props: IPaginateProps) => {
 
   const setPagination = () => {
     const totalPages = Math.ceil(props.total / props.limit);
-    if(totalPages&& totalPages<page){
-      setPage(totalPages)
+    if (totalPages && totalPages < page) {
+      setPage(totalPages);
     }
     setTotalPage(totalPages);
     const segment: { isActive: boolean; label: number }[] = [];
@@ -44,12 +44,11 @@ export const Paginate = (props: IPaginateProps) => {
 
   useEffect(() => {
     setPagination();
-  }, [page,props.total]);
+  }, [page, props.total, props.limit]);
 
-  useEffect(()=>{
+  useEffect(() => {
     props.setSkip((page - 1) * props.limit);
-  },[page])
-
+  }, [page, props.limit,props.total]);
 
   // const getPage = async (page: number) => {
   //   setPage(page);

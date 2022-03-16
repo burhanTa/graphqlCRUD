@@ -23,7 +23,7 @@ export const TypeDef = gql`
   }
   
   type UserResponse {
-    docs(take: Int, skip: Int, sort:String , order: String): [User]
+    docs(take: Int, skip: Int, sort:String , order: String,search: String): [User]
     count: Int
   }
 
